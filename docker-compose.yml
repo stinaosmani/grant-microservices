@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  grant-service:
+    build: ./grant-service
+    ports:
+      - "8081:8081"
+
+  application-service:
+    build: ./application-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - grant-service
+    environment:
+      - grant.service.url=http://grant-service:8081
