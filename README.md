@@ -47,9 +47,6 @@ This will:
 
 You can test endpoints directly from these pages.
 
-Example:
-- `GET /apply/1` → application-service will call grant-service and return a composed result
-
 ---
 
 ##  Run the Project Without Docker
@@ -84,12 +81,15 @@ Use Swagger to test the APIs via browser.
 | application-service  | http://localhost:8080/swagger-ui.html   |
 
 ---
-## Example Usage
+## Example Usage (Swagger)
 
-### 1. Test Grant Service directly
+Test endpoints directly in Swagger UI:
 
-**Request:**
-`GET http://localhost:8081/grants/1`
+### Grant Service
+
+1. Open: [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html)
+2. Expand `GET /grants/{id}`
+3. Try with ID: `1`
 
 **Response:**
 ```json
@@ -100,15 +100,103 @@ Use Swagger to test the APIs via browser.
   "category": "Technology"
 }
 ```
-### 2. Test Application Service (which calls Grant Service)
 
-**Request:**
-`GET http://localhost:8080/apply/1`
+### Application Service (which calls Grant Service)
+
+1. Open: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+2. Expand `GET /apply/{grantId}`
+3. Try with grant ID: `1`
+    - This will fetch data from `grant-service` and return a formatted response.
 
 **Response:**
 `Application submitted for: Startup Innovation Grant (Technology), Amount: €5000.0`
 
+---
+
+## Project Structure
+
+The project follows the principles of **Clean Architecture**, emphasizing separation of concerns and independence from frameworks.
+
+Each microservice (`grant-service`, `application-service`) is structured with the following layers:
+
+```
+└── src
+    └── main
+        └── java
+            └── com.example.[service]
+                ├── app
+                │   └── dto          
+                │   └── service      
+                │   └── error         
+                │
+                ├── domain
+                │   └── model       
+                │   └── port         
+                │
+                ├── infrastructure
+                │   └── mapper        
+                │   └── client       
+                │
+                └── controller       
+```
+
+## Explanation of Folders
+
+### `app`
+Contains application logic (use cases), which coordinates domain logic with infrastructure.
+
+- **`dto`**: Data Transfer Objects used for transferring structured data between layers.
+- **`service`**: The actual implementation of business logic (also known as "use cases").
+- **`error`**: Global error handling classes.
 
 
+### `domain`
+The heart of the application. Contains pure business rules and interfaces that define what the application does.
 
+- **`model`**: Domain models (entities) that represent core business data.
+- **`port`**: Interfaces (also known as "ports") used by the application layer. Implementations in `app.service`.
 
+### `infrastructure`
+Contains implementation details for communication with external services or tools.
+
+- **`mapper`**: Classes for mapping between domain models and DTOs, implemented with MapStruct.
+- **`client`**: External clients (like Feign clients for inter-service communication).
+
+### `controller`
+Web layer for handling HTTP requests and mapping them to service methods. It’s placed outside the layered architecture for simplicity and separation from core logic.
+
+---
+
+## Technologies Used
+
+| Tech                  | Purpose                                     |
+|-----------------------|---------------------------------------------|
+| Spring Boot           | Web framework for microservice development  |
+| Spring Web            | REST APIs                                   |
+| Spring Cloud OpenFeign| Service-to-service communication            |
+| MapStruct             | DTO ↔ Model mapping                         |
+| Docker & Compose      | Containerization                            |
+| Swagger / OpenAPI     | API documentation                           |
+
+## Error Handling
+
+To ensure consistent and readable API responses, each service implements a **global exception handler** using Spring’s `@ControllerAdvice`.
+
+- All exceptions are caught and converted into a structured JSON response using a custom `ErrorResponse` class.
+- For example, if a grant is not found, instead of returning a plain 404, the service returns:
+
+```json
+{
+  "timestamp": "2025-04-17T15:58:21.5275978",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Grant with ID 99 not found",
+  "path": "/grants/99"
+}
+```
+
+### Error Classes
+| File | Purpose |
+|------|---------|
+| `app/error/ErrorResponse.java` | Defines the format of the JSON error message |
+| `app/error/GlobalExceptionHandler.java` | Centralized handler that intercepts exceptions and returns `ErrorResponse` |
