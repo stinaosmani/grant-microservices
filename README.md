@@ -29,7 +29,17 @@ git clone https://github.com/stinaosmani/grant-microservices.git
 cd grant-microservices
 ```
 
-2. **Start the Services**
+2. **Build before Running**
+
+Before running with Docker, build the services:
+
+```bash
+./mvnw clean package -DskipTests
+```
+
+Run this in both grant-service and application-service folders to generate the JAR files.
+
+3. **Start the Services**
 ```bash
 docker-compose up --build
 ```
