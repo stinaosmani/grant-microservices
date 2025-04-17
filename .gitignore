@@ -1,0 +1,13 @@
+# IntelliJ / IDE
+.idea/
+*.iml
+
+# Build output
+target/
+
+# Maven wrapper internals
+.mvn/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
