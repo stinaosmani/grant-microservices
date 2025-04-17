@@ -61,11 +61,12 @@ If you prefer running locally through an IDE like IntelliJ or from the terminal:
 ### Steps
 
 1. Open both `grant-service` and `application-service` in your IDE
-2. Run the main classes:
+2. Right-click on the pom.xml file of each service and select "Add as Maven Project" (if not already imported).
+3. Run the main classes:
     - `GrantServiceApplication.java` (localhost:8081)
     - `ApplicationServiceApplication.java` (localhost:8080)
 
-3. Open Swagger UIs:
+4. Open Swagger UIs:
 - [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html)
 - [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
