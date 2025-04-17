@@ -1,6 +1,6 @@
-package com.example.applicationservice.client;
+package com.example.applicationservice.infrastructure.client;
 
-import com.example.applicationservice.model.Grant;
+import com.example.applicationservice.domain.model.Grant;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

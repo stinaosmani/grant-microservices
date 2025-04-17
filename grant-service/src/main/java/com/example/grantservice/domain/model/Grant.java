@@ -1,4 +1,4 @@
-package com.example.grantservice.model;
+package com.example.grantservice.domain.model;
 
 public class Grant {
     private String id;

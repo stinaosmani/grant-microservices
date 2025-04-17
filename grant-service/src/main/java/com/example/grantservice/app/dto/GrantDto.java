@@ -1,15 +1,15 @@
-package com.example.applicationservice.model;
+package com.example.grantservice.app.dto;
 
-public class Grant {
+public class GrantDto {
     private String id;
     private String title;
     private double amount;
     private String category;
 
-    public Grant() {
+    public GrantDto() {
     }
 
-    public Grant(String id, String title, double amount, String category) {
+    public GrantDto(String id, String title, double amount, String category) {
         this.id = id;
         this.title = title;
         this.amount = amount;
@@ -20,28 +20,28 @@ public class Grant {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public void setCategory(String category) {
