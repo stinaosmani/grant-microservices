@@ -11,3 +11,6 @@ target/
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# .gitignore
+HELP.md

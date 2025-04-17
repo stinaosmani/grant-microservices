@@ -1,23 +1,20 @@
 package com.example.applicationservice.controller;
 
-import com.example.applicationservice.client.GrantClient;
-import com.example.applicationservice.model.Grant;
+import com.example.applicationservice.domain.port.ApplicationService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/apply")
 public class ApplicationController {
 
-    private final GrantClient grantClient;
+    private final ApplicationService applicationService;
 
-    public ApplicationController(GrantClient grantClient) {
-        this.grantClient = grantClient;
+    public ApplicationController(ApplicationService applicationService) {
+        this.applicationService = applicationService;
     }
 
     @GetMapping("/{grantId}")
     public String applyForGrant(@PathVariable String grantId) {
-        Grant grant = grantClient.getGrantById(grantId);
-        return "✅ Application submitted for: " + grant.getTitle() +
-                " (" + grant.getCategory() + "), Amount: €" + grant.getAmount();
+        return applicationService.applyForGrant(grantId);
     }
 }
